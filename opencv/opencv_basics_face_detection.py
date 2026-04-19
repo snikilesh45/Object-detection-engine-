@@ -1,7 +1,7 @@
 import cv2
 
 def webcam_demo():
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
 
     # Load the pre-trained face detector
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
