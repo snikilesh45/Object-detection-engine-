@@ -24,6 +24,10 @@ Requirements
  
 -PyTorch (with CUDA for GPU support)
 
+Usage
+bash
+python yolo_webcam.py
+
 Code Structure
 
 Components
