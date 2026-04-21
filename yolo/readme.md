@@ -24,24 +24,24 @@ Requirements
  
 -PyTorch (with CUDA for GPU support)
 
-Code Structure:
+Code Structure
 
-Components:
--YOLODetector: 
+Components
+-YOLODetector 
 Wrapper class for YOLO model initialization, detection, and drawing
--detect():
+-detect()
 Runs inference on a frame and returns results
--draw(): 
+-draw()
 Renders bounding boxes using Ultralytics' native plotting
--yolo_webcam(): 
+-yolo_webcam() 
 Main loop handling video capture, timing, and display
 
-GPU Setup:
+GPU Setup
 The model automatically moves to GPU if CUDA is available:
 self.model.to("cuda")  # Inside YOLODetector.__init__
 
-Performance Benchmarks:
-Tested on Intel i5-12th Gen (CPU) vs NVIDIA RTX 4050 (GPU) using YOLOv11n:
+Performance Benchmarks
+Tested on Intel i5-12th Gen (CPU) vs NVIDIA RTX 4050 (GPU) using YOLOv11n
  ---------------------------------------------
  |Resolution  |   CPU         |  GPU         |
  |            | FPS | ACCURACY|  FPS|ACCURACY|
@@ -50,7 +50,7 @@ Tested on Intel i5-12th Gen (CPU) vs NVIDIA RTX 4050 (GPU) using YOLOv11n:
  | 1280x720   | 9   |  0.95   |7-40 |0.90    |
 ----------------------------------------------
 
-Observations:
+Observations
 -CPU performance is relatively stable across resolutions (~7–9 FPS) with slight accuracy edge at higher resolutions.
 -GPU performance shows wide variance (7–51 FPS) depending on scene complexity and thermal throttling.
 
