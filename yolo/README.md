@@ -52,17 +52,53 @@ self.model.to("cuda")  # Inside YOLODetector.__init__
 
 ---
 
-## Performance Benchmarks
+## Performance (After Threading + TensorRT)
 
-Tested on **Intel i5-12th Gen (CPU)** vs **NVIDIA RTX 4050 (GPU)** using YOLOv11n.
+| Metric | Value |
+|------|------|
+| Real FPS (throughput) | 29–31 FPS |
+| Inference Time | 5–6 ms |
+| CPU Usage | 1–2% |
+| Accuracy | ~0.96 |
 
-| Resolution | CPU FPS | CPU Accuracy | GPU FPS | GPU Accuracy |
-|---|---|---|---|---|
-| 320×240 | 7 | 0.92 | 12–40 | 0.93 |
-| 640×480 | 8 | 0.94 | 10–51 | 0.92 |
-| 1280×720 | 9 | 0.95 | 7–40 | 0.90 |
+### Notes
+- Real FPS measured using frame count per second (accurate throughput)
+- Instant/average FPS may show higher values due to asynchronous pipeline behavior
 
-### Observations
+## Key Insights
 
-- **CPU** performance is relatively stable across resolutions (~7–9 FPS) with a slight accuracy edge at higher resolutions.
-- **GPU** performance shows wide variance (7–51 FPS) depending on scene complexity and thermal throttling.
+- TensorRT reduced inference time by ~2x
+- Threading improved system responsiveness and reduced CPU usage
+- Bottleneck shifted from model → display and I/O (webcam + rendering)
+- Real-time systems require measuring throughput, not loop speed
+
+## Threaded Pipeline
+
+To improve real-time performance, the system uses a producer-consumer model:
+
+- Thread 1: Captures frames from webcam
+- Thread 2: Performs inference and displays output
+- Queue: Synchronizes frames between threads
+
+### Benefits
+- Reduced lag
+- Better GPU utilization
+- Lower CPU usage
+- Improved responsiveness
+
+ ## FPS Clarification
+
+Two types of FPS are observed:
+
+- **Real FPS**: Number of frames processed per second (~30 FPS)
+- **Instant FPS**: Loop speed, which may appear higher due to asynchronous processing
+
+Only real FPS represents actual system performance.
+
+## Limitations
+
+- Webcam limits throughput to ~30 FPS
+- `cv2.imshow()` introduces rendering overhead
+- System is currently display-bound, not compute-bound
+
+
