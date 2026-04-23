@@ -1,13 +1,83 @@
-# Object-detection-engine-
-The system converts a PyTorch-based YOLO model into an optimized TensorRT engine through an ONNX intermediate, enabling low-latency, high-throughput inference suitable for real-time applications
-## Optimization (TensorRT)
+# Real-Time Object Detection Engine (YOLO + TensorRT)
 
-The model was converted to TensorRT for faster inference.
+A real-time object detection system built using YOLOv11, optimized with TensorRT, and enhanced with a threaded pipeline for efficient performance.
 
-### Results:
-- ~2x faster inference
-- improved FPS range
-- reduced latency
+## Features
+- Real-time webcam object detection
+- TensorRT acceleration (FP16)
+- Threaded pipeline (capture + inference)
+- Low CPU usage (1–2%)
+- Stable real-time performance (~30 FPS)
 
-### Note:
-Performance is still affected by webcam input and display pipeline.
+## Demo
+
+- Detects multiple objects in real-time using webcam
+- Displays bounding boxes, labels, and FPS
+- Optimized for low latency and smooth performance
+
+## System Architecture
+
+The system uses a producer-consumer design:
+
+- Thread 1: Captures frames from webcam
+- Thread 2: Performs inference and rendering
+- Queue: Synchronizes frames between threads
+
+### Pipeline
+
+Capture → Queue → TensorRT Inference → Display
+
+## Performance
+
+| Metric | Value |
+|------|------|
+| Real FPS (throughput) | 29–31 FPS |
+| Inference Time | 5–6 ms |
+| CPU Usage | 1–2% |
+| Accuracy | ~0.96 |
+
+### Notes
+- Real FPS measured using frame count per second
+- Instant FPS may appear higher due to asynchronous processing
+
+## Optimization
+
+- Converted YOLO model to TensorRT (FP16)
+- Fixed input resolution for consistent inference
+- Reduced rendering overhead
+- Implemented threaded pipeline
+- Controlled queue size and frame dropping
+
+### Result
+- Faster inference (~2x improvement)
+- Stable FPS
+- Efficient resource usage
+
+## Key Insights
+
+- Optimizing the model alone is not enough for real-time systems
+- Bottleneck shifts from model → I/O and display after optimization
+- Real-time performance must be measured using throughput, not loop speed
+- Threading significantly improves responsiveness and CPU efficiency
+
+## Limitations
+
+- Webcam limits throughput to ~30 FPS
+- `cv2.imshow()` introduces rendering overhead
+- System is currently I/O-bound, not compute-bound
+
+
+## Progress
+
+- Day 1: OpenCV basics
+- Day 2: YOLO integration
+- Day 3: Performance tuning
+- Day 4: TensorRT optimization
+- Day 5: Threaded real-time pipeline
+
+## Future Work
+
+- Object tracking (DeepSORT / ByteTrack)
+- Multi-camera support
+- FastAPI-based streaming
+- Further GPU optimization
