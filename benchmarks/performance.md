@@ -1,41 +1,91 @@
-# Performance Comparison
+# Performance Benchmarks
 
 ## Hardware
-- GPU: RTX 4050
-- CPU: i5 12th Gen
+- GPU: NVIDIA RTX 4050
+- CPU: Intel i5 (12th Gen)
+- Input: Webcam (640×480)
+
+---
 
 ## Results
 
-| Model | FPS | Inference Time |
-|------|------|----------------|
-| PyTorch (.pt) | 27–40 | 9.9 ms |
-| TensorRT (.engine) | 32–59 | 5.3 ms |
+###  PyTorch (Baseline)
+
+| Metric | Value |
+|------|------|
+| FPS | 27–40 |
+| Inference Time | ~9.9 ms |
+| Accuracy | ~0.94 |
+
+---
+
+###  TensorRT (FP16)
+
+| Metric | Value |
+|------|------|
+| FPS | 32–59 |
+| Inference Time | ~5.3 ms |
+| Accuracy | ~0.92–0.94 |
+
+---
+
+###  TensorRT + Optimized Pipeline
+
+| Metric | Value |
+|------|------|
+| Real FPS (throughput) | **29–31 FPS** |
+| Inference Time | **5–6 ms** |
+| CPU Usage | **1–2%** |
+| Accuracy | **~0.96** |
+
+---
 
 ## Observations
 
-- TensorRT reduces inference time by ~2x
-- FPS improvement is not linear due to pipeline overhead
-- Bottleneck shifts from model → I/O and display
+- TensorRT reduced inference time by approximately **2x**
+- Raw FPS increased, but not proportionally due to system overhead
+- After optimization, **pipeline bottleneck shifted from model → I/O and display**
+- Threading improved responsiveness and reduced CPU usage significantly
 
-## Final Results (After Optimization)
+---
 
-| Model | FPS | Inference |
-|------|------|-----------|
-| PyTorch | 27–40 | 9.9 ms |
-| TensorRT (optimized) | 30–40 | 5–6 ms |
+## Important Note on FPS
 
-### Key Insight
-After TensorRT optimization, the bottleneck shifted from model inference to the processing pipeline (capture + display).
+Two different FPS values can be observed:
 
-## Optimization Steps
+- **Instant FPS**: Calculated per loop iteration (can spike up to 100+)
+- **Real FPS**: Measured using frame count per second (~30 FPS)
 
-- Converted model to TensorRT (FP16)
-- Fixed input resolution for consistent inference
-- Reduced drawing overhead
-- Limited logging frequency
-- Smoothed FPS calculation
+Only **real FPS represents actual system throughput**
 
-### Result
-- Stable FPS (30–40)
-- Consistent inference time (5–6 ms)
-- Balanced system performance
+---
+
+## Bottleneck Analysis
+
+| Stage | Bottleneck |
+|------|-----------|
+| PyTorch | Model inference |
+| TensorRT | Partial pipeline |
+| Threaded + Optimized | Display + Webcam I/O |
+
+---
+
+## Key Insight
+
+Optimizing the model (TensorRT) improves inference speed,  
+but overall system performance depends on:
+
+- Frame capture (webcam)
+- Data transfer
+- Rendering (`cv2.imshow`)
+- Pipeline design
+
+Final system is **I/O-bound, not compute-bound**
+
+---
+
+## Conclusion
+
+- TensorRT significantly improves inference performance
+- Threading enables efficient resource utilization
+- Real-time performance is limited by external I/O, not the model
