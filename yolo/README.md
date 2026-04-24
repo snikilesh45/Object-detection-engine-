@@ -79,6 +79,7 @@ To improve real-time performance, the system uses a producer-consumer model:
 - Thread 1: Captures frames from webcam
 - Thread 2: Performs inference and displays output
 - Queue: Synchronizes frames between threads
+  
 
 ### Benefits
 - Reduced lag
@@ -95,10 +96,21 @@ Two types of FPS are observed:
 
 Only real FPS represents actual system performance.
 
+## Tracking & Counting
+
+- Real-time object tracking using ByteTrack
+- Line-crossing counter implemented
+- Supports multi-object counting
+
+### Notes
+- Counting is event-based (not per frame)
+- Uses tracking IDs to avoid duplication
+  
 ## Limitations
 
 - Webcam limits throughput to ~30 FPS
 - `cv2.imshow()` introduces rendering overhead
 - System is currently display-bound, not compute-bound
+
 
 
