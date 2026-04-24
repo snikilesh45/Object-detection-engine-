@@ -28,7 +28,7 @@ fps_list = []
 seen_ids = set()  # ← Tracks unique object IDs across all frames
 
 
-# 🔹 Thread 1: Capture
+#  Thread 1: Capture
 def capture_frames():
     global stop_flag
     cap = cv2.VideoCapture(0)
@@ -57,7 +57,7 @@ def capture_frames():
     cap.release()
 
 
-# 🔹 Thread 2: Inference + Display
+#  Thread 2: Inference + Display
 def process_frames():
     global stop_flag, seen_ids
     detector = YOLODetector("yolo11n.engine")
@@ -76,7 +76,7 @@ def process_frames():
 
         frame = detector.draw(results)
 
-        # ✅ Accumulate unique tracked object IDs
+        #  Accumulate unique tracked object IDs
         for r in results:
             if r.boxes.id is not None:
                 for obj_id in r.boxes.id:
@@ -99,7 +99,7 @@ def process_frames():
             frame_count = 0
             start_time = time.time()
 
-        # ✅ Overlay: FPS on line 1, Unique Objects on line 2
+        #  Overlay: FPS on line 1, Unique Objects on line 2
         cv2.putText(frame, f"FPS: {int(fps)} | Avg: {avg_fps:.1f}",
                     (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         cv2.putText(frame, f"Unique Objects: {len(seen_ids)}",
