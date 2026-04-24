@@ -22,7 +22,7 @@ stop_flag = False
 fps_list = []
 
 
-# 🔹 Thread 1: Capture
+#  Thread 1: Capture
 def capture_frames():
     global stop_flag
     cap = cv2.VideoCapture(0)
@@ -51,7 +51,7 @@ def capture_frames():
     cap.release()
 
 
-# 🔹 Thread 2: Inference + Display
+#  Thread 2: Inference + Display
 def process_frames():
     global stop_flag
     detector = YOLODetector("yolo11n.engine")
