@@ -74,10 +74,25 @@ Capture → Queue → TensorRT Inference → Display
 - Day 3: Performance tuning
 - Day 4: TensorRT optimization
 - Day 5: Threaded real-time pipeline
+- Day 6:Object Tracking and line crossing counter
+
+## Object Counting (Day 6)
+
+Implemented a line-crossing counter using object tracking.
+
+### Features
+- Persistent object IDs using tracking
+- Counts objects only when crossing a virtual line
+- Avoids duplicate counting
+
+### Use Cases
+- People counting
+- Traffic monitoring
+- Entry/exit analytics
 
 ## Future Work
 
-- Object tracking (DeepSORT / ByteTrack)
+
 - Multi-camera support
 - FastAPI-based streaming
 - Further GPU optimization
