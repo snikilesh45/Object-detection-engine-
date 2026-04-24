@@ -89,3 +89,12 @@ Final system is **I/O-bound, not compute-bound**
 - TensorRT significantly improves inference performance
 - Threading enables efficient resource utilization
 - Real-time performance is limited by external I/O, not the model
+
+## Day 6 Update
+
+- Added object tracking and line-crossing counter
+- No significant impact on FPS (~30 FPS stable)
+- CPU usage remains low (1–2%)
+
+### Observation
+Tracking and counting add minimal overhead due to efficient pipeline design
