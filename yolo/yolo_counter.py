@@ -28,13 +28,13 @@ stop_flag = False
 fps_list = []
 seen_ids = set()
 
-# 🔹 Line-crossing counter globals
+#  Line-crossing counter globals
 track_history = {}
 count = 0
 counted_ids = set()
 
 
-# 🔹 Thread 1: Capture
+#  Thread 1: Capture
 def capture_frames():
     global stop_flag
     cap = cv2.VideoCapture(0)
@@ -63,7 +63,7 @@ def capture_frames():
     cap.release()
 
 
-# 🔹 Thread 2: Inference + Display
+#  Thread 2: Inference + Display
 def process_frames():
     global stop_flag, seen_ids, track_history, count, counted_ids
     detector = YOLODetector("yolo11n.engine")
@@ -82,16 +82,16 @@ def process_frames():
 
         frame = detector.draw(results)
 
-        # ✅ Draw the counting line
+        #  Draw the counting line
         cv2.line(frame, (0, LINE_Y), (640, LINE_Y), (0, 255, 255), 2)
 
-        # ✅ Accumulate unique tracked object IDs
+        #  Accumulate unique tracked object IDs
         for r in results:
             if r.boxes.id is not None:
                 for obj_id in r.boxes.id:
                     seen_ids.add(int(obj_id))
 
-        # ✅ Line-crossing detection (top → bottom)
+        #  Line-crossing detection (top → bottom)
         if results[0].boxes.id is not None:
             boxes = results[0].boxes.xyxy
             ids = results[0].boxes.id
@@ -132,7 +132,7 @@ def process_frames():
             frame_count = 0
             start_time = time.time()
 
-        # ✅ Overlays — stacked vertically, no overlap
+        #  Overlays — stacked vertically, no overlap
         cv2.putText(frame, f"FPS: {int(fps)} | Avg: {avg_fps:.1f}",
                     (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         cv2.putText(frame, f"Count: {count}",
