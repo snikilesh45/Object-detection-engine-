@@ -35,6 +35,12 @@ Camera → Frame Queue → TensorRT Inference (GPU) → ByteTrack Tracking → L
 - **Line counter** triggers counts only on crossing events, avoiding duplicates
 - **Output** branches to local OpenCV display or network streaming (MJPEG / WebRTC)
 
+### Notes
+
+- Capture and inference are decoupled using a queue for real-time performance
+- Frame dropping ensures low latency
+- TensorRT accelerates GPU inference
+- WebRTC is used for efficient streaming compared to MJPEG
 ---
 
 ## Performance
