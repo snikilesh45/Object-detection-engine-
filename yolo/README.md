@@ -105,7 +105,27 @@ Only real FPS represents actual system performance.
 ### Notes
 - Counting is event-based (not per frame)
 - Uses tracking IDs to avoid duplication
-  
+
+## Streaming Performance
+
+- MJPEG streaming via FastAPI achieves ~10–12 FPS
+- Attempts to optimize encoding/drawing had minimal impact
+- Bottleneck is due to Python-based streaming and encoding overhead
+
+### Insight
+Further performance improvements require architectural changes (e.g., WebRTC)
+
+## Streaming Comparison
+
+| Method | FPS | Notes |
+|------|------|------|
+| MJPEG (FastAPI) | ~11–12 | High encoding overhead |
+| WebRTC | ~21 | Low latency, efficient streaming |
+
+### Insight
+Switching from MJPEG to WebRTC significantly improves performance by eliminating per-frame encoding bottlenecks.
+
+
 ## Limitations
 
 - Webcam limits throughput to ~30 FPS
