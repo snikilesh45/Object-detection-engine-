@@ -29,16 +29,15 @@ Capture → Queue → TensorRT Inference → Display
 
 ## Performance
 
-| Metric | Value |
-|------|------|
-| Real FPS (throughput) | 29–31 FPS |
-| Inference Time | 5–6 ms |
-| CPU Usage | 1–2% |
-| Accuracy | ~0.96 |
+| Mode | FPS | Inference | CPU |
+|------|------|-----------|------|
+| OpenCV (local) | ~30 | 5–6 ms | ~1–2% |
+| FastAPI (MJPEG) | ~11–12 | 5–6 ms | higher |
+| WebRTC | ~21 | 5–6 ms | low |
 
 ### Notes
-- Real FPS measured using frame count per second
-- Instant FPS may appear higher due to asynchronous processing
+- FPS limited by I/O (display/streaming), not model
+- WebRTC provides better real-time performance than MJPEG
 
 ## Optimization
 
@@ -74,7 +73,8 @@ Capture → Queue → TensorRT Inference → Display
 - Day 3: Performance tuning
 - Day 4: TensorRT optimization
 - Day 5: Threaded real-time pipeline
-- Day 6:Object Tracking and line crossing counter
+- Day 6: Object Tracking and line crossing counter
+- Day 7: Streaming
 
 ## Object Counting (Day 6)
 
@@ -90,9 +90,37 @@ Implemented a line-crossing counter using object tracking.
 - Traffic monitoring
 - Entry/exit analytics
 
+## Streaming (Day 7)
+
+Two streaming methods were implemented:
+
+### MJPEG (FastAPI)
+- Simple implementation
+- FPS: ~11–12
+- High CPU usage due to per-frame encoding
+
+### WebRTC
+- Low-latency streaming
+- FPS: ~21 (stable)
+- Efficient video transmission
+
+### Key Insight
+Switching from MJPEG to WebRTC significantly improves performance by eliminating per-frame encoding overhead.
+
+## System Evolution
+
+1. OpenCV Pipeline → ~30 FPS
+2. TensorRT Optimization → Faster inference
+3. Threaded Pipeline → Stable performance
+4. FastAPI (MJPEG) → Deployment but slower FPS
+5. WebRTC → Improved streaming performance
+
+### Insight
+Performance optimization required moving from model-level improvements to system-level architectural changes.
+
 ## Future Work
 
 
 - Multi-camera support
-- FastAPI-based streaming
+
 - Further GPU optimization
