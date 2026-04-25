@@ -98,3 +98,26 @@ Final system is **I/O-bound, not compute-bound**
 
 ### Observation
 Tracking and counting add minimal overhead due to efficient pipeline design
+
+## Streaming Benchmarks (Day 7)
+
+| Method | FPS | Latency | Notes |
+|------|------|---------|------|
+| MJPEG (FastAPI) | ~11–12 | High | Encoding bottleneck |
+| WebRTC | ~21 | Low | Efficient streaming |
+
+### Observation
+- MJPEG is CPU-bound due to per-frame encoding
+- WebRTC reduces overhead and improves smoothness
+- Model inference time remains unchanged (~5–6 ms)
+
+## Key Insight (Day 7)
+
+Optimizing inference alone does not guarantee better system performance.
+
+Streaming architecture plays a critical role:
+- MJPEG → simple but inefficient
+- WebRTC → complex but performant
+
+Final system bottleneck shifted from:
+Model → Pipeline → Streaming architecture
