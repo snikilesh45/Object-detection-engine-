@@ -28,19 +28,19 @@ Camera → Frame Queue → TensorRT Inference (GPU) → ByteTrack Tracking → L
                                              (~11 FPS)          (~21 FPS)
 ```
 
+
+
+
+### Notes
+
 - **Camera thread** captures frames asynchronously and pushes to a bounded queue
 - **Frame queue** drops stale frames to maintain real-time behavior (latency over completeness)
 - **TensorRT inference** runs on GPU (RTX 4050) at FP16 precision — ~5–6 ms per frame
 - **ByteTrack** assigns persistent IDs across frames without re-identification overhead
 - **Line counter** triggers counts only on crossing events, avoiding duplicates
 - **Output** branches to local OpenCV display or network streaming (MJPEG / WebRTC)
-
-### Notes
-
-- Capture and inference are decoupled using a queue for real-time performance
-- Frame dropping ensures low latency
-- TensorRT accelerates GPU inference
 - WebRTC is used for efficient streaming compared to MJPEG
+  
 ---
 
 ## Performance
