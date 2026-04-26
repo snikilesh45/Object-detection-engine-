@@ -77,3 +77,21 @@ The system progressed from **compute-bound → I/O-bound** as each layer was opt
 - MJPEG streaming is CPU-bound due to per-frame encoding; WebRTC eliminates this bottleneck
 - Switching MJPEG → WebRTC recovered ~10 FPS in streaming throughput
 - Final system is **I/O-bound, not compute-bound** — optimizing the model further yields diminishing returns
+
+## Batch Inference Benchmark 
+
+| Setup | FPS | Latency | GPU |
+|------|------|---------|------|
+| 2 Streams (no batching) | 21–30 | 6–10 ms | ~72% |
+| 2 Streams (batching) | 71–80 | 3–4.8 ms | ~96% |
+
+### Observation
+
+Batching significantly improves:
+- throughput
+- GPU utilization
+- system balance across streams
+
+### Insight
+
+Batch inference is more efficient than independent inference for multi-stream workloads.
