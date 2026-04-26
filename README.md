@@ -175,7 +175,32 @@ Both streams share a single RTX 4050 GPU. Each stream runs its own threaded pipe
 
 A single RTX 4050 can handle 2 simultaneous streams with acceptable performance. Scaling beyond 2 cameras would require batched inference or a dedicated GPU per stream to maintain ~30 FPS and full accuracy.
 
+
+## Batch Inference Results
+
+| Metric | Before | After |
+|------|--------|-------|
+| FPS (per stream) | 21–30 | 71–80 |
+| Latency | 6–10 ms | 3–4.8 ms |
+| GPU Usage | ~72% | ~96% |
+
+### Key Observations
+
+- GPU utilization increased significantly with batching
+- Throughput improved across all streams
+- Latency decreased due to reduced per-inference overhead
+- Performance became more balanced across cameras
+
+### Insight
+
+Batch inference improves system efficiency by:
+- minimizing kernel launch overhead
+- maximizing parallel GPU execution
+- reducing scheduling imbalance
+
+This demonstrates that system-level optimization can outperform per-stream optimization.
+
 **Future Improvements**
-- Batch inference across multiple streams
+
 - Asynchronous GPU execution via CUDA streams
 - Load balancing across devices
