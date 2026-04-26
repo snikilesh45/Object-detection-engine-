@@ -103,6 +103,14 @@ Switching from MJPEG → WebRTC recovered ~10 FPS by removing the per-frame enco
 **FPS note:** Real FPS (frames processed per second) is the accurate throughput metric. Instant/loop FPS may read higher due to asynchronous pipeline behavior.
 
 ---
+## Batch Inference
+
+- Supports processing multiple frames in a single inference call
+- Improves GPU utilization and throughput
+- Reduces per-frame overhead
+
+### Tradeoff
+- May increase latency in some cases (not observed in this setup)
 
 ## Limitations
 
