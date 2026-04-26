@@ -124,13 +124,56 @@ Switching from MJPEG → WebRTC recovered ~10 FPS and significantly reduced stre
 
 ---
 
-## Scaling Considerations
+# Multi-Camera Scaling Experiment
 
-| Cameras | Expected FPS |
-|---------|-------------|
-| 1 | ~30 (local) |
-| 2 | ~15–20 per stream |
-| 3+ | Requires batching or multi-GPU |
+Real-world test of running the detection pipeline on 1 vs 2 simultaneous webcam streams, measuring GPU load, per-stream FPS, and confidence impact.
+
+---
+
+## Setup
+
+| | Camera 1 | Camera 2 |
+|---|---|---|
+| Type | Built-in laptop webcam | External USB (1080p, 60 FPS native) |
+| Resolution | 640×480 | 1080p (downscaled to 640 for inference) |
+
+Both streams share a single RTX 4050 GPU. Each stream runs its own threaded pipeline with independent inference.
+
+---
+
+## Results
+
+### Single Camera
+
+| Metric | Value |
+|--------|-------|
+| GPU Usage | ~50% |
+| FPS (OpenCV) | ~30 |
+| Confidence (mAP) | ~0.96 |
+
+### Dual Camera
+
+| Metric | Camera 1 (Built-in) | Camera 2 (1080p USB) |
+|--------|--------------------|-----------------------|
+| GPU Usage (combined) | ~71% | ~71% |
+| FPS | ~20 | ~31 |
+| Confidence (mAP) | ~0.94 | ~0.94 |
+
+---
+
+## Observations
+
+- GPU usage scaled from **~50% → ~71%** when adding a second stream — the GPU is not saturated and can support additional cameras
+- Camera 1 (built-in) dropped from ~30 → ~20 FPS due to shared GPU contention and its lower native frame rate
+- Camera 2 (1080p USB) maintained ~31 FPS, likely benefiting from a higher-quality input signal and stable USB bandwidth
+- Confidence dropped slightly (~0.96 → ~0.94) across both streams — consistent with increased pipeline load and potential frame drops under contention
+- The bottleneck at 2 cameras shifts toward **GPU memory bandwidth and I/O scheduling**, not raw compute
+
+---
+
+## Takeaway
+
+A single RTX 4050 can handle 2 simultaneous streams with acceptable performance. Scaling beyond 2 cameras would require batched inference or a dedicated GPU per stream to maintain ~30 FPS and full accuracy.
 
 **Future Improvements**
 - Batch inference across multiple streams
