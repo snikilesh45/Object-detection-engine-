@@ -41,7 +41,7 @@ def inference_loop():
 
         # Measure batch inference latency
         t_start = time.perf_counter()
-        results = model(frames, imgsz=640, verbose=False)
+        results = model(frames, imgsz=640, verbose=False) # Batch inference improves GPU utilization by processing multiple frames simultaneously
         latency_ms = (time.perf_counter() - t_start) * 1000
 
         for cam_id, res in zip(cam_ids, results):
