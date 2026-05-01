@@ -59,6 +59,7 @@ def process_frames():
     prev_time = time.time()
     
     # Real FPS counter variables
+    real_fps=0
     frame_count = 0
     start_time = time.time()
 
