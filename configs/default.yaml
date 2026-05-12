@@ -1,0 +1,38 @@
+# Model
+model:
+  path: models/yolo11n.engine
+  input_size: 640
+  confidence_threshold: 0.5
+  device: cuda
+
+# Camera
+camera:
+  source: 0               # 0 = default webcam, or "/dev/video1" for USB
+  width: 640
+  height: 480
+  buffer_size: 1
+
+# Pipeline
+pipeline:
+  queue_maxsize: 10
+  frame_drop: true        # drop stale frames to prioritize latency
+
+# Streaming
+streaming:
+  mjpeg:
+    port: 8000
+    encode_every: 2       # encode every Nth frame
+    jpeg_quality: 60
+  webrtc:
+    port: 8001
+
+# Analytics
+analytics:
+  line_counter:
+    enabled: true
+    line_position: 0.5    # fraction of frame height (0.5 = center)
+
+# Logging
+logging:
+  level: INFO
+  log_fps_every: 30       # frames
