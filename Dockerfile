@@ -2,7 +2,7 @@
 FROM nvcr.io/nvidia/tensorrt:23.04-py3
 
 # Metadata
-LABEL maintainer="your-email@example.com"
+LABEL maintainer="snikilesh45@gmail.com"
 LABEL description="Real-time object detection engine — YOLO11n + TensorRT + ByteTrack"
 
 # Set non-interactive frontend to prevent apt-get from hanging on tzdata/prompts
@@ -29,7 +29,7 @@ COPY src/       ./src/
 COPY configs/   ./configs/
 COPY models/    ./models/
 
-# Create non-root user (security best practice)
+# Create non-root user 
 RUN useradd -m -u 1000 appuser && chown -R appuser /app
 USER appuser
 
