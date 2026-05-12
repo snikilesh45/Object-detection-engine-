@@ -14,6 +14,31 @@ A real-time object detection system built with YOLOv11, optimized using TensorRT
 
 ---
 
+## Dependencies
+
+### Core
+pip install -r requirements.txt
+
+### GPU (optional)
+pip install -r requirements-gpu.txt
+
+### TensorRT
+TensorRT must be installed separately due to CUDA and system dependencies.
+Refer to NVIDIA documentation.
+
+## Running with Docker
+
+```bash
+# Build
+docker compose build
+
+# Run (requires NVIDIA Container Toolkit)
+docker compose up
+```
+
+> GPU passthrough requires [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html).
+
+
 ## Architecture
 
 ```
